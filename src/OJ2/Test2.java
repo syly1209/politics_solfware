@@ -22,14 +22,14 @@ public class Test2 extends JFrame implements ActionListener {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        pattern1 = new JButton("练习模式");                                   //初始化按键
+        pattern1 = new JButton("练习模式");
         pattern2 = new JButton("限时训练");
         panel = new JPanel();
 
         pattern1.addActionListener(this);
         pattern2.addActionListener(this);
 
-        panel.add(pattern1);                                     //把单选按钮放到选项组
+        panel.add(pattern1);
         panel.add(pattern2);
 
         this.add(panel,BorderLayout.SOUTH);
@@ -45,7 +45,7 @@ public class Test2 extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
         if(e.getSource()==pattern1)	{
-            new Test3();
+            new Test3("sx");
             this.setVisible(false);
         }
         if(e.getSource()==pattern2) {

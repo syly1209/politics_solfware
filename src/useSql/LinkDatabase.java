@@ -6,17 +6,17 @@ import java.sql.*;
 import java.util.Vector;
 
 public  class LinkDatabase  {
-    private Connection conn = null;
     private Statement stmt = null;
-    private String dbUser = "root";
-    private String dbPassword = "syly";
+
     public LinkDatabase(String dname){
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String dbURL = "jdbc:mysql://114.215.25.205:3306/"+dname+"?useUnicode=true&characterEncoding=utf8";
-            conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
+            String dbUser = "root";
+            String dbPassword = "syly";
+            Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
             System.out.println("连接成功");
-            stmt=conn.createStatement();
+            stmt= conn.createStatement();
         }
         catch (Exception e){
             e.printStackTrace();//打印异常信息

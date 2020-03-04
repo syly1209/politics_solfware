@@ -18,80 +18,79 @@ public class Test3 extends JFrame implements ActionListener{
     private JLabel label,clock;
     private  JTextArea jTextArea;
     private JPanel panel,panel2,panel3;
+    private String subject="";
     Testquestion t1;
     Testquestion[] questions;
-    int examtime;
-    int p=0;//设置题目数指针
+    int p=0;
     int topicnum=0;
-    int right,error;                                                     //答对和答错
-    ClockDisplay mt;                                                     //倒计时模块
+    int right,error;
+    ClockDisplay mt;
 
-    public Test3(){
+    public Test3(String subject){
+        this.subject=subject;
+        this.setTitle("学生在线考试系统v1");
+        this.setSize(440,320);
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        this.setTitle("学生在线考试系统v1");                                   //设置标题
-        this.setSize(440,320);                                           //设置窗口大小
-        this.setLocationRelativeTo(null);                                //设置显示位置居中
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);             //设置关闭时关闭
-
-        panel = new JPanel();                                            //初始化面板
+        panel = new JPanel();
         panel2 = new JPanel();
         panel3 = new JPanel();
-        label = new JLabel("总考试时间:100分钟 ");                             //初始化并命名标签
+        label = new JLabel("总考试时间:100分钟 ");
         clock = new JLabel();
-        jTextArea = new JTextArea(10,35);                                //初始化文本区域
-        jTextArea.setEditable(false);                                    //设置文本不可修改
+        jTextArea = new JTextArea(10,35);
+        jTextArea.setEditable(false);
 
-        aButton =  new JRadioButton("A");                                //初始化单选按钮
+        aButton =  new JRadioButton("A");
         bButton =  new JRadioButton("B");
         cButton =  new JRadioButton("C");
         dButton =  new JRadioButton("D");
-        buttonGroup = new ButtonGroup();                                 //初始化选项组
+        buttonGroup = new ButtonGroup();
 
-        start = new JButton("开始考试");                                   //初始化按键
+        start = new JButton("开始考试");
         back = new JButton("上一题");
         next  = new JButton("下一题");
         commit = new JButton("提交考试");
 
-        aButton.addActionListener(this);                              //单选按钮添加监听事件
+        aButton.addActionListener(this);
         bButton.addActionListener(this);
         cButton.addActionListener(this);
         dButton.addActionListener(this);
 
-        start.addActionListener(this);                                //按钮添加监听事件
+        start.addActionListener(this);
         back.addActionListener(this);
         next.addActionListener(this);
         commit.addActionListener(this);
 
-
-        buttonGroup.add(aButton);                                     //把单选按钮放到选项组
+        buttonGroup.add(aButton);
         buttonGroup.add(bButton);
         buttonGroup.add(cButton);
         buttonGroup.add(dButton);
 
-        panel.add(label);                                             //把标签放入面板panel
+        panel.add(label);
         panel.add(clock);
-        panel.add(start);                                             //把按键放入面板panel
-        panel2.add(jTextArea);                                        //把文本区域放入面板panel2
-        panel3.add(aButton);                                          //把单选按钮放入面板panel3
+        panel.add(start);
+        panel2.add(jTextArea);
+        panel3.add(aButton);
         panel3.add(bButton);
         panel3.add(cButton);
         panel3.add(dButton);
-        panel3.add(back);                                             //把按键放入面板panel3
+        panel3.add(back);
         panel3.add(next);
         panel3.add(commit);
 
-        this.add(panel,BorderLayout.NORTH);                           //设置面板panel放在上面
-        this.add(panel2,BorderLayout.CENTER);                         //设置面板panel2放在中间
-        this.add(panel3, BorderLayout.SOUTH);                         //设置面板panel放在下面
+        this.add(panel,BorderLayout.NORTH);
+        this.add(panel2,BorderLayout.CENTER);
+        this.add(panel3, BorderLayout.SOUTH);
 
-        this.setVisible(true);                                        //设置窗口可见
+        this.setVisible(true);
 
-        mt = new ClockDisplay(clock, 100);                            //调用并设置倒计时的时间
+        mt = new ClockDisplay(clock, 100);
     }
 
     public void createExam() {
         LinkDatabase conn=new LinkDatabase("test");
-        Vector <Testquestion> qList=conn.loadExam("sx");
+        Vector <Testquestion> qList=conn.loadExam(subject);
         topicnum=qList.size();//确定题目数量
         questions=new Testquestion[topicnum];
         for (int i=0;i<qList.size();i++) {
@@ -99,7 +98,7 @@ public class Test3 extends JFrame implements ActionListener{
         }
     }
 
-    public void setSelected(String s) {//设置单选按钮不重复模块
+    public void setSelected(String s) {
         if (s.equals("B")) buttonGroup.setSelected(bButton.getModel(), true);
         if (s.equals("C")) buttonGroup.setSelected(cButton.getModel(), true);
         if (s.equals("D")) buttonGroup.setSelected(dButton.getModel(), true);
@@ -107,37 +106,37 @@ public class Test3 extends JFrame implements ActionListener{
 
     }
 
-    public void showQuestion() {//设置试题模块
+    public void showQuestion() {
         jTextArea.setText("");
-        jTextArea.append(questions[p].getQuestionText());//在文本区域显示试题
+        jTextArea.append(questions[p].getQuestionText());
         setSelected(questions[p].getSelectKey());
     }
 
-    public void showScore() {//设置成绩模块
+    public void showScore() {
         right=0;error=0;
         for (int i = 0; i < topicnum; i++) {
-            if (questions[i].check()) {//判断答案的正确与错误
+            if (questions[i].check()) {
                 right++;
             }else {
                 error++;
             }
         }
-        int score = (int)(right*100/topicnum);            //设置分数
+        int score = (int)(right*100/topicnum);
         JOptionPane.showMessageDialog(null, "答对"+right+"题，答错"+error+"题，分数为"+score);
     }
 
 
     @Override
-    public void actionPerformed(ActionEvent e) {//动作监听事件
+    public void actionPerformed(ActionEvent e) {
 
-        if (e.getSource()==start) {//开始开始按键实现
-            createExam();          //调用createExam模块
-            p=0;                   //题目序号
-            showQuestion();        //调用showQuestion模块
-            start.setEnabled(false);//设置按钮不可点击
-            mt.start();             //考试时间倒计时启动
+        if (e.getSource()==start) {
+            createExam();
+            p=0;
+            showQuestion();
+            start.setEnabled(false);
+            mt.start();
         }
-        if (e.getSource()==back) {//上一题的按键实现
+        if (e.getSource()==back) {
             p--;
             if (p==-1) {
                 JOptionPane.showMessageDialog(null, "已经是第一题");
@@ -145,7 +144,7 @@ public class Test3 extends JFrame implements ActionListener{
             }
             showQuestion();
         }
-        if (e.getSource()==next) {//下一题的按键实现
+        if (e.getSource()==next) {
             p++;
             if (p==topicnum) {
                 JOptionPane.showMessageDialog(null, "已经是最后一题");
@@ -153,10 +152,10 @@ public class Test3 extends JFrame implements ActionListener{
             }
             showQuestion();
         }
-        if (e.getSource()==commit) {//提交试卷的按键实现
+        if (e.getSource()==commit) {
             showScore();
             commit.setEnabled(false);
-            System.exit(0);          //退出
+            System.exit(0);
         }
 
         if(e.getSource()==aButton) questions[p].setSelectKey("A");
@@ -167,6 +166,6 @@ public class Test3 extends JFrame implements ActionListener{
     }
 
     public static void main(String[] args) {
-        new Test3();
+        new Test3("sx");
     }
 }
