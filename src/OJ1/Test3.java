@@ -1,16 +1,12 @@
 package OJ1;
 
-import useSql.LinkDatabase;
-
 import java.awt.*;
-import java.sql.*;
 import java.awt.event.*;
-import java.text.NumberFormat;
 import java.util.*;
 import javax.swing.*;
 
 @SuppressWarnings("serial")
-public class Test3 extends JFrame implements ActionListener{
+public class Test3 extends examFrame implements ActionListener{
 
     private JButton start,commit,back,next;
     private JRadioButton aButton,bButton,cButton,dButton;
@@ -27,11 +23,8 @@ public class Test3 extends JFrame implements ActionListener{
     ClockDisplay mt;
 
     public Test3(String subject){
+        super();
         this.subject=subject;
-        this.setTitle("学生在线考试系统v1");
-        this.setSize(440,320);
-        this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         panel = new JPanel();
         panel2 = new JPanel();
@@ -102,7 +95,8 @@ public class Test3 extends JFrame implements ActionListener{
         if (s.equals("B")) buttonGroup.setSelected(bButton.getModel(), true);
         if (s.equals("C")) buttonGroup.setSelected(cButton.getModel(), true);
         if (s.equals("D")) buttonGroup.setSelected(dButton.getModel(), true);
-        if (s.equals("")) buttonGroup.clearSelection();	if (s.equals("A")) buttonGroup.setSelected(aButton.getModel(), true);
+        if (s.equals("")) buttonGroup.clearSelection();
+        if (s.equals("A")) buttonGroup.setSelected(aButton.getModel(), true);
 
     }
 
@@ -133,8 +127,9 @@ public class Test3 extends JFrame implements ActionListener{
             createExam();
             p=0;
             showQuestion();
-            start.setEnabled(false);
+            start.setVisible(false);
             mt.start();
+
         }
         if (e.getSource()==back) {
             p--;

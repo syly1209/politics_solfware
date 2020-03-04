@@ -1,27 +1,24 @@
-package OJ2;
+package OJ1;
 
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-import OJ1.*;
+import javax.swing.*;
 
 @SuppressWarnings("serial")
 
-public class Test2 extends JFrame implements ActionListener {
+public class Test2 extends examFrame implements ActionListener {
     private JButton pattern1,pattern2;
     private JPanel panel;
     public Test2() {
-        this.setTitle("hhhh");
-        this.setSize(440,320);
-        this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        super();
 
+        //TextArea a=new TextArea("hhhh");
+
+        JLabel title;
+        title = new JLabel("             请选择模式");
+        title.setFont(new Font("宋体", Font.PLAIN, 40));
         pattern1 = new JButton("练习模式");
         pattern2 = new JButton("限时训练");
         panel = new JPanel();
@@ -33,6 +30,7 @@ public class Test2 extends JFrame implements ActionListener {
         panel.add(pattern2);
 
         this.add(panel,BorderLayout.SOUTH);
+        this.add(title,BorderLayout.CENTER);
         this.setVisible(true);
 
     }
@@ -45,11 +43,12 @@ public class Test2 extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
         if(e.getSource()==pattern1)	{
-            new Test3("sx");
-            this.setVisible(false);
+            System.exit(0);
+
         }
         if(e.getSource()==pattern2) {
-            System.exit(0);
+            new Test3("sx");
+            this.setVisible(false);
         }
     }
 
