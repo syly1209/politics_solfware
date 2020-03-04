@@ -1,9 +1,9 @@
 package OJ1;
 
 public class Testquestion {
-    private  String questionText ="";//定义题目
-    private String standardkey = "";// 定义正确答案
-    private String  selectKey ="";// 定义输入答案
+    private  String questionText ="";
+    private String standardkey = "";
+    private String  selectKey ="";
     public Testquestion(String questionText, String standardkey) {
         super();
         this.questionText = questionText;
