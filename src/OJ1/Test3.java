@@ -1,5 +1,7 @@
 package OJ1;
 
+import useSql.LinkDatabase;
+
 import java.awt.*;
 import java.sql.*;
 import java.awt.event.*;
@@ -87,46 +89,9 @@ public class Test3 extends JFrame implements ActionListener{
         mt = new ClockDisplay(clock, 100);                            //调用并设置倒计时的时间
     }
 
-    public void createExam()
-    {
-        Testquestion t=null;
-        String questionText="";
-        String standardKey="";
-
-        Vector <Testquestion> qList=new Vector <Testquestion>();
-        //读取试题文件，获取考试时间和题目等内容
-        Connection conn = null;
-        Statement stmt = null;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            String dbURL = "jdbc:mysql://114.215.25.205:3306/test?useUnicode=true&characterEncoding=utf8";//驱动加载
-            String dbUser = "root"; //数据库用户名
-            String dbPassword = "syly";	//密码
-            conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
-            System.out.println("JDBC驱动程序连接数据库成功!");
-            stmt=conn.createStatement(); //创建连接方法
-        }
-        catch (Exception e){
-            e.printStackTrace();//打印异常信息
-        }
-
-        try {
-            String sSQL = "SELECT * FROM sx";//查询数据库表信息
-            ResultSet rs = stmt.executeQuery(sSQL);//接收
-            while (rs.next()){   //读取
-                //System.out.print(rs.getString("tm")+"     ");
-                questionText=rs.getString("title")+"\nA."+rs.getString(3)+"\nB."+rs.getString(4)+"\nC."+rs.getString(5)+"\nD."+rs.getString(6)+'\n';//获取表的列
-                standardKey=rs.getString("ans");
-                t=new Testquestion(questionText,standardKey);
-                qList.add(t);
-            }
-        }
-        catch(SQLException e){
-            System.out.println(e.getMessage());
-
-        }
-
+    public void createExam() {
+        LinkDatabase conn=new LinkDatabase("test");
+        Vector <Testquestion> qList=conn.loadExam("sx");
         topicnum=qList.size();//确定题目数量
         questions=new Testquestion[topicnum];
         for (int i=0;i<qList.size();i++) {
