@@ -71,8 +71,13 @@ public class Register extends examFrame implements ActionListener {
             LinkDatabase k=new LinkDatabase("test");
             String a=user.getText();
             String b=password.getText();
+            if(a.isEmpty()||b.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "输入为空");
+                return;
+            }
             try {
                 k.createUser(a,b);
+                this.setVisible(false);
                 new logIn();
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "创建失败");
