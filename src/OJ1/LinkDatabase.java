@@ -1,20 +1,18 @@
 package OJ1;
 
-import OJ1.Testquestion;
-
 import java.sql.*;
 import java.util.Vector;
 
 public  class LinkDatabase  {
     private Statement stmt = null;
-
+    private Connection conn;
     public LinkDatabase(String dname){
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.jdbc.Driver");
             String dbURL = "jdbc:mysql://114.215.25.205:3306/"+dname+"?useUnicode=true&characterEncoding=utf8";
             String dbUser = "root";
             String dbPassword = "syly";
-            Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
+            conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
             System.out.println("连接成功");
             stmt= conn.createStatement();
         }
@@ -56,6 +54,31 @@ public  class LinkDatabase  {
             System.out.println(e.getMessage());
         }
         return op;
+    }
+    public boolean sUser(String user, String password){
+        try {
+            String sSQL = "SELECT password FROM user WHERE name='" + user + "'";//查询数据库表信息
+            ResultSet rs = stmt.executeQuery(sSQL);//接收
+            while (rs.next()){   //读取
+                if(password.equals(rs.getString("password"))) {
+                    return true;
+                }
+                else
+                    return false;
+            }
+        }
+        catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+    public void createUser(String user, String password) throws SQLException {
+        String sql = "insert into user values(?,?)";//查询数据库表信息
+        PreparedStatement pst = conn.prepareStatement(sql);//用来执行SQL语句查询，对sql语句进行预编译处理
+        pst.setString(1, user);
+        pst.setString(2, password);
+        System.out.println(pst.executeUpdate());//解释在下
+
     }
 
 }

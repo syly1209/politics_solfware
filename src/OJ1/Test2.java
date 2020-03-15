@@ -12,7 +12,7 @@ public class Test2 extends examFrame implements ActionListener {
     private JButton pattern1,pattern2;
     private JPanel panel;
     public Test2() {
-        super();
+        super(740,520);
 
         //TextArea a=new TextArea("hhhh");
 
@@ -33,10 +33,6 @@ public class Test2 extends examFrame implements ActionListener {
         this.add(title,BorderLayout.CENTER);
         this.setVisible(true);
 
-    }
-    public static void main(String[] args) {
-        // TODO Auto-generated method stub
-        new Test2();
     }
 
     @Override

@@ -6,10 +6,10 @@ import java.awt.*;
 import java.util.Enumeration;
 
 public class examFrame extends JFrame {
-    public examFrame(){
+    public examFrame(int width,int height){
         InitGlobalFont(new Font("宋体", Font.PLAIN, 32));
         this.setTitle("个人练习系统");
-        this.setSize(740,520);
+        this.setSize(width,height);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }

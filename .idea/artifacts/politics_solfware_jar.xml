@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="politics_solfware:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/politics_solfware_jar</output-path>
+    <root id="archive" name="politics_solfware.jar">
+      <element id="module-output" name="politics_solfware" />
+      <element id="extracted-dir" path="$APPLICATION_CONFIG_DIR$/jdbc-drivers/MySQL Connector/J 8/8.0.15/mysql-connector-java-8.0.15.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

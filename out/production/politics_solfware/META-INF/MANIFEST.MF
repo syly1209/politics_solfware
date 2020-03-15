@@ -1,4 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: OJ2.Test2
-Class-Path: mysql-connector-java-8.0.15.jar
+Main-Class: OJ1.Main
 

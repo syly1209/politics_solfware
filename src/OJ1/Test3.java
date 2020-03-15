@@ -23,7 +23,7 @@ public class Test3 extends examFrame implements ActionListener{
     ClockDisplay mt;
 
     public Test3(String subject){
-        super();
+        super(740,520);
         this.subject=subject;
 
         panel = new JPanel();
@@ -160,7 +160,4 @@ public class Test3 extends examFrame implements ActionListener{
 
     }
 
-    public static void main(String[] args) {
-        new Test3("sx");
-    }
 }
