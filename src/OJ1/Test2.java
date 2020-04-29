@@ -11,9 +11,10 @@ import javax.swing.*;
 public class Test2 extends examFrame implements ActionListener {
     private JButton pattern1,pattern2;
     private JPanel panel;
-    public Test2() {
+    private String user;
+    public Test2(String user) {
         super(740,520);
-
+        this.user=user;
         //TextArea a=new TextArea("hhhh");
 
         JLabel title;
@@ -32,18 +33,18 @@ public class Test2 extends examFrame implements ActionListener {
         this.add(panel,BorderLayout.SOUTH);
         this.add(title,BorderLayout.CENTER);
         this.setVisible(true);
-
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
         if(e.getSource()==pattern1)	{
+            //hh
             System.exit(0);
 
         }
         if(e.getSource()==pattern2) {
-            new Test3("sx");
+            new Test3(user,"sx");
             this.setVisible(false);
         }
     }

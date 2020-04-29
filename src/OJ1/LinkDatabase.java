@@ -6,10 +6,12 @@ import java.util.Vector;
 public  class LinkDatabase  {
     private Statement stmt = null;
     private Connection conn;
-    public LinkDatabase(String dname){
+    private String user;
+    public LinkDatabase(String user,String dname){
         try {
+            this.user=user;
             Class.forName("com.mysql.jdbc.Driver");
-            String dbURL = "jdbc:mysql://114.215.25.205:3306/"+dname+"?useUnicode=true&characterEncoding=utf8";
+            String dbURL = "jdbc:mysql://121.36.171.81:3306/"+dname+"?useUnicode=true&characterEncoding=utf8";
             String dbUser = "root";
             String dbPassword = "syly";
             conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
@@ -29,9 +31,10 @@ public  class LinkDatabase  {
             String sSQL = "SELECT * FROM "+tname;
             ResultSet rs = stmt.executeQuery(sSQL);
             while (rs.next()){
-                questionText=rs.getString("title")+"\nA."+rs.getString(3)+"\nB."+rs.getString(4)+"\nC."+rs.getString(5)+"\nD."+rs.getString(6)+'\n';
-                standardKey=rs.getString("ans");
-                t=new Testquestion(questionText,standardKey);
+                t=new Testquestion(rs.getString("title"),
+                        "A."+rs.getString(3),"B."+rs.getString(4),
+                        "C."+rs.getString(5),
+                        "D."+rs.getString(6),rs.getString("ans"));
                 qList.add(t);
             }
         }
@@ -39,21 +42,6 @@ public  class LinkDatabase  {
             System.out.println(e.getMessage());
         }
         return qList;
-    }
-    public String getOp(){
-        String op="";
-        try {
-            String sSQL = "SELECT * FROM operator";//查询数据库表信息
-            ResultSet rs = stmt.executeQuery(sSQL);//接收
-            while (rs.next()){   //读取
-                //System.out.print(rs.getString("tm")+"     ");
-                op=rs.getString("op");
-            }
-        }
-        catch(SQLException e){
-            System.out.println(e.getMessage());
-        }
-        return op;
     }
     public boolean sUser(String user, String password){
         try {

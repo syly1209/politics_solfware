@@ -7,7 +7,7 @@ import java.util.Enumeration;
 
 public class examFrame extends JFrame {
     public examFrame(int width,int height){
-        InitGlobalFont(new Font("宋体", Font.PLAIN, 32));
+        InitGlobalFont(new Font("宋体", Font.PLAIN, 28));
         this.setTitle("个人练习系统");
         this.setSize(width,height);
         this.setLocationRelativeTo(null);

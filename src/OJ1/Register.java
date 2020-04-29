@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.regex.*;
 
 public class Register extends examFrame implements ActionListener {
     private JButton pattern1;
@@ -13,7 +14,6 @@ public class Register extends examFrame implements ActionListener {
     private JPanel panel3;
     private JTextField user;
     private JTextField password;
-
     public Register(){
         super(520,340);
         this.setLayout(new GridLayout(7,5,5,5));
@@ -23,12 +23,12 @@ public class Register extends examFrame implements ActionListener {
         this.add(title1,BorderLayout.NORTH);
 
         JLabel title2;
-        title2 = new JLabel("                用户名格式：8位字符");
+        title2 = new JLabel("                     请使用邮箱注册");
         title2.setFont(new Font("宋体", Font.PLAIN, 20));
         this.add(title2,BorderLayout.CENTER);
 
         JLabel title3;
-        title3 = new JLabel("                  密码格式：8位字符");
+        title3 = new JLabel("             密码格式：8位字符(数字或字母)");
         title3.setFont(new Font("宋体", Font.PLAIN, 20));
         this.add(title3);
 
@@ -68,21 +68,43 @@ public class Register extends examFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==pattern1){
-            LinkDatabase k=new LinkDatabase("test");
+
             String a=user.getText();
             String b=password.getText();
+
             if(a.isEmpty()||b.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "输入为空");
                 return;
             }
+            if(!isPassword(b)||!isUser(a)){
+                JOptionPane.showMessageDialog(null, "用户名或密码不合法");
+                return;
+            }
+            LinkDatabase k=new LinkDatabase(a,"test");
             try {
                 k.createUser(a,b);
+                JOptionPane.showMessageDialog(null, "注册成功");
                 this.setVisible(false);
-                new logIn();
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "创建失败");
             }
 
         }
+    }
+    private boolean isPassword(String a){
+        if(a.length()!=8)
+            return false;
+        String pattern = "[a-zA-z0-9]+";
+        if(Pattern.matches(pattern, a))
+            return true;
+        else
+            return false;
+    }
+    private boolean isUser(String a){
+        String pattern = "\\w{0,}\\@\\w{0,}\\.{1}\\w{0,}";
+        if(Pattern.matches(pattern, a))
+            return true;
+        else
+            return false;
     }
 }

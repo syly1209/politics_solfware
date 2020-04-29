@@ -5,15 +5,21 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class logIn extends examFrame implements ActionListener {
+public class logIn extends examFrame implements ActionListener,Runnable {
     private JButton pattern1,pattern2;
     private JPanel panel1;
     private JPanel panel2;
     private JPanel panel3;
     private JTextField user;
     private JTextField password;
+    public String use;
     public logIn(){
         super(520,340);
+        JFrame.setDefaultLookAndFeelDecorated(true);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public void init(){
         this.setLayout(new GridLayout(5,5,5,5));
         JLabel title1;
         title1 = new JLabel("              欢迎使用XXXX");
@@ -60,25 +66,31 @@ public class logIn extends examFrame implements ActionListener {
         this.add(panel1);
         this.add(panel2);
         this.add(panel3);
-        this.setVisible(true);
     }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==pattern1){
             String a=user.getText();
             String b=password.getText();
-            LinkDatabase p=new LinkDatabase("test");
+            LinkDatabase p=new LinkDatabase(use,"test");
             if(p.sUser(a,b)){
+                use=a;
                 this.setVisible(false);
-                new Test2();
+                //new Test2();
+                //this.dispose();
             }
             else
                 JOptionPane.showMessageDialog(null, "用户名错误");
         }
         if(e.getSource()==pattern2){
             this.setVisible(false);
-            new Register();
+            Register a=new Register();
+            a.dispose();
         }
+    }
+
+    @Override
+    public void run() {
+
     }
 }
