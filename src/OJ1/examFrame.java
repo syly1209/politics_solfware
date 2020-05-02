@@ -10,7 +10,7 @@ public class examFrame extends JFrame {
         InitGlobalFont(new Font("宋体", Font.PLAIN, 28));
         this.setTitle("个人练习系统");
         this.setSize(width,height);
-        this.setLocationRelativeTo(null);
+        //this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     private static void InitGlobalFont(Font font) {

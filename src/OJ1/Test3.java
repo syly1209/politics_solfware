@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
+import java.sql.*;
 
 @SuppressWarnings("serial")
 public class Test3 extends examFrame implements ActionListener{
@@ -21,15 +22,20 @@ public class Test3 extends examFrame implements ActionListener{
     int right,error;
     ClockDisplay mt;
     private LinkDatabase conn;
+    private int time;
+    private String user;
 
-    public Test3(String user,String subject){
-        super(740,520);
+    public Test3(String user,String subject,int time){
+        super(840,620);
         this.subject=subject;
+        this.time=time;
+
+        this.user=user;
 
         panel = new JPanel();
-        panel2 = new JPanel(new GridLayout(5,1));
+
         panel3 = new JPanel();
-        label = new JLabel("总考试时间:100分钟 ");
+        label = new JLabel("总考试时间:"+time+"分钟 ");
         clock = new JLabel();
 
         start = new JButton("开始考试");
@@ -56,19 +62,95 @@ public class Test3 extends examFrame implements ActionListener{
 
         conn=new LinkDatabase(user,"test");
 
+        panel2 = new JPanel(new GridLayout(5,1));
+        title =new JLabel();
+
+        title.setFont(new Font("宋体", Font.PLAIN, 23));
+        title.setSize(740,0);
+
+        aButton=new JRadioButton();
+        bButton=new JRadioButton();
+        cButton=new JRadioButton();
+        dButton=new JRadioButton();
+
+        aButton.setFont(new Font("宋体", Font.PLAIN, 20));
+        bButton.setFont(new Font("宋体", Font.PLAIN, 20));
+        cButton.setFont(new Font("宋体", Font.PLAIN, 20));
+        dButton.setFont(new Font("宋体", Font.PLAIN, 20));
+
+        aButton.addActionListener(this);
+        bButton.addActionListener(this);
+        cButton.addActionListener(this);
+        dButton.addActionListener(this);
+
+        buttonGroup = new ButtonGroup();
+        buttonGroup.add(aButton);
+        buttonGroup.add(bButton);
+        buttonGroup.add(cButton);
+        buttonGroup.add(dButton);
+
+        panel2.add(title);
+        panel2.add(aButton);
+        panel2.add(bButton);
+        panel2.add(cButton);
+        panel2.add(dButton);
+
+        this.add(panel2,BorderLayout.CENTER);
+
         this.setVisible(true);
 
-        mt = new ClockDisplay(clock, 100);
+        mt = new ClockDisplay(clock, time);
     }
 
     public void createExam() {
-
-        Vector <Testquestion> qList=conn.loadExam(subject);
-        topicnum=qList.size();//确定题目数量
-        questions=new Testquestion[topicnum];
-        for (int i=0;i<qList.size();i++) {
-            questions[i]=(Testquestion)qList.get(i);
+        if(subject=="sj"){
+            Random random=new Random();
+            Vector <Testquestion> List=new Vector<>();
+            List.addAll(conn.loadExam("sx"));
+            List.addAll(conn.loadExam("my"));
+            List.addAll(conn.loadExam("gy"));
+            List.addAll(conn.loadExam("mg"));
+            if(time==20){
+                topicnum=20;
+            }
+            else {
+                topicnum=5;
+            }
+            HashSet<Integer>set=new HashSet<>();
+            questions=new Testquestion[topicnum];
+            do{
+                set.add(random.nextInt(List.size()));
+            }while (set.size()!=topicnum);
+            int p=0;
+            for (int i:set){
+                questions[p++]=(Testquestion)List.get(i);
+            }
         }
+        else {
+            Vector <Testquestion> qList=conn.loadExam(subject);
+            if(time==60){
+                topicnum=qList.size();//确定题目数量
+                questions=new Testquestion[topicnum];
+                for (int i=0;i<qList.size();i++) {
+                    questions[i]=(Testquestion)qList.get(i);
+                }
+            }
+            else {
+                Random random=new Random();
+                topicnum=5;
+                HashSet<Integer>set=new HashSet<>();
+                questions=new Testquestion[topicnum];
+                do{
+                    set.add(random.nextInt(qList.size()));
+                }while (set.size()!=topicnum);
+                int p=0;
+                for (int i:set){
+                    questions[p++]=(Testquestion)qList.get(i);
+                }
+            }
+        }
+        System.out.println(questions.length);
+
     }
 
     public void setSelected(String s) {
@@ -111,40 +193,13 @@ public class Test3 extends examFrame implements ActionListener{
 
     public void showQuestion() {
 
-        title =new JLabel();
-        //title.setHorizontalAlignment(JLabel.CENTER);
-        title.setFont(new Font("宋体", Font.PLAIN, 23));
-        title.setSize(740,0);
         title.setText("<html><p class=\"p3\">&emsp;"+get(title,"呵呵"+questions[p].getQuestionText())+"</p></html>");
-        aButton =  new JRadioButton(questions[p].getA()+"\n");
-        bButton =  new JRadioButton(questions[p].getB()+"\n");
-        cButton =  new JRadioButton(questions[p].getC()+"\n");
-        dButton =  new JRadioButton(questions[p].getD()+"\n");
-        buttonGroup = new ButtonGroup();
-
-        aButton.setFont(new Font("宋体", Font.PLAIN, 20));
-        bButton.setFont(new Font("宋体", Font.PLAIN, 20));
-        cButton.setFont(new Font("宋体", Font.PLAIN, 20));
-        dButton.setFont(new Font("宋体", Font.PLAIN, 20));
-
-        aButton.addActionListener(this);
-        bButton.addActionListener(this);
-        cButton.addActionListener(this);
-        dButton.addActionListener(this);
-
-        buttonGroup.add(aButton);
-        buttonGroup.add(bButton);
-        buttonGroup.add(cButton);
-        buttonGroup.add(dButton);
-
-        panel2.add(title);
-        panel2.add(aButton);
-        panel2.add(bButton);
-        panel2.add(cButton);
-        panel2.add(dButton);
-
-        this.add(panel2,BorderLayout.CENTER);
-
+        System.out.println(questions[p].getQuestionText()+"     "+p);
+        aButton.setText(questions[p].getA());
+        bButton.setText(questions[p].getB());
+        cButton.setText(questions[p].getC());
+        dButton.setText(questions[p].getD());
+        panel2.setVisible(true);
 //        jTextArea.setText("");
 //        jTextArea.append(questions[p].getQuestionText());
         setSelected(questions[p].getSelectKey());
@@ -158,8 +213,8 @@ public class Test3 extends examFrame implements ActionListener{
                 error++;
             }
         }
-        int score = (int)(right*100/topicnum);
-        JOptionPane.showMessageDialog(null, "答对"+right+"题，答错"+error+"题，分数为"+score);
+        conn.update(right);
+        JOptionPane.showMessageDialog(null, "答对"+right+"题，答错"+error+"题");
     }
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -177,6 +232,8 @@ public class Test3 extends examFrame implements ActionListener{
                 JOptionPane.showMessageDialog(null, "已经是第一题");
                 p++;
             }
+            else
+                panel2.setVisible(false);
             showQuestion();
         }
         if (e.getSource()==next) {
@@ -185,12 +242,15 @@ public class Test3 extends examFrame implements ActionListener{
                 JOptionPane.showMessageDialog(null, "已经是最后一题");
                 p--;
             }
+            else
+                panel2.setVisible(false);
             showQuestion();
         }
         if (e.getSource()==commit) {
             showScore();
             commit.setEnabled(false);
-            System.exit(0);
+            this.setVisible(false);
+            new Test2(user,conn);
         }
 
         if(e.getSource()==aButton) questions[p].setSelectKey("A");
@@ -199,5 +259,4 @@ public class Test3 extends examFrame implements ActionListener{
         if(e.getSource()==dButton) questions[p].setSelectKey("D");
 
     }
-
 }

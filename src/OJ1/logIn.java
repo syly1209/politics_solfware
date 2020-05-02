@@ -15,19 +15,20 @@ public class logIn extends examFrame implements ActionListener,Runnable {
     public String use;
     public logIn(){
         super(520,340);
-        JFrame.setDefaultLookAndFeelDecorated(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     public void init(){
         this.setLayout(new GridLayout(5,5,5,5));
         JLabel title1;
-        title1 = new JLabel("              欢迎使用XXXX");
+        title1 = new JLabel("欢迎使用");
+        title1.setHorizontalAlignment(JLabel.CENTER);
         title1.setFont(new Font("宋体", Font.PLAIN, 25));
         this.add(title1,BorderLayout.NORTH);
 
         JLabel title2;
-        title2 = new JLabel("                  请登录");
+        title2 = new JLabel("请登录");
+        title2.setHorizontalAlignment(JLabel.CENTER);
         title2.setFont(new Font("宋体", Font.PLAIN, 25));
         this.add(title2);
 
@@ -76,16 +77,14 @@ public class logIn extends examFrame implements ActionListener,Runnable {
             if(p.sUser(a,b)){
                 use=a;
                 this.setVisible(false);
-                //new Test2();
-                //this.dispose();
+                new Test2(a,new LinkDatabase(a,"test"));
             }
             else
                 JOptionPane.showMessageDialog(null, "用户名错误");
         }
         if(e.getSource()==pattern2){
             this.setVisible(false);
-            Register a=new Register();
-            a.dispose();
+            new Register();
         }
     }
 

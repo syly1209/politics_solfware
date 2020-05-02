@@ -18,17 +18,20 @@ public class Register extends examFrame implements ActionListener {
         super(520,340);
         this.setLayout(new GridLayout(7,5,5,5));
         JLabel title1;
-        title1 = new JLabel("              欢迎来到用户注册");
+        title1 = new JLabel("欢迎来到用户注册");
+        title1.setHorizontalAlignment(JLabel.CENTER);
         title1.setFont(new Font("宋体", Font.PLAIN, 25));
         this.add(title1,BorderLayout.NORTH);
 
         JLabel title2;
-        title2 = new JLabel("                     请使用邮箱注册");
+        title2 = new JLabel("用户名可以是任何字符");
+        title2.setHorizontalAlignment(JLabel.CENTER);
         title2.setFont(new Font("宋体", Font.PLAIN, 20));
         this.add(title2,BorderLayout.CENTER);
 
         JLabel title3;
-        title3 = new JLabel("             密码格式：8位字符(数字或字母)");
+        title3 = new JLabel("密码格式：8位字符(数字或字母)");
+        title3.setHorizontalAlignment(JLabel.CENTER);
         title3.setFont(new Font("宋体", Font.PLAIN, 20));
         this.add(title3);
 
@@ -76,8 +79,8 @@ public class Register extends examFrame implements ActionListener {
                 JOptionPane.showMessageDialog(null, "输入为空");
                 return;
             }
-            if(!isPassword(b)||!isUser(a)){
-                JOptionPane.showMessageDialog(null, "用户名或密码不合法");
+            if(!isPassword(b)){
+                JOptionPane.showMessageDialog(null, "密码不合法");
                 return;
             }
             LinkDatabase k=new LinkDatabase(a,"test");
@@ -85,6 +88,9 @@ public class Register extends examFrame implements ActionListener {
                 k.createUser(a,b);
                 JOptionPane.showMessageDialog(null, "注册成功");
                 this.setVisible(false);
+                logIn a1=new logIn();
+                a1.init();
+                a1.setVisible(true);
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "创建失败");
             }
